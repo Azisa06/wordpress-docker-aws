@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: database-wordpress.cgrqa20q0xnf.us-east-1.rds.amazonaws.com:3306
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - /mnt/efs:/var/www/html/wp-content
