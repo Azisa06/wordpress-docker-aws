@@ -3,7 +3,25 @@
 Este projeto tem como objetivo provisionar uma infraestrutura escalável e resiliente para o WordPress, utilizando serviços gerenciados da AWS em conjunto com containers Docker e orquestração via Docker Compose.
 
 ---
+## 📑 Sumário
+  - [🖥️ Etapas no Console da AWS](#️-etapas-no-console-da-aws)
+    - [1. Criar a VPC](#1-criar-a-vpc)
+    - [2. Criar um EFS](#2-criar-um-efs)
+    - [3. Criar o RDS (MySQL)](#3-criar-o-rds-mysql)
+    - [4. Criar EC2](#4-criar-ec2)
+    - [5. Acessar instância pelo terminal](#5-acessar-instância-pelo-terminal)
+    - [6. Configurar Security Groups](#6-configurar-security-groups)
+    - [7. Configurar Wordpress](#7-configurar-wordpress)
+    - [8. Criar Target Group](#8-criar-target-group)
+    - [9. Criar um Load Balancer](#9-criar-um-load-balancer)
+    - [10. Criar Launch Template](#10-criar-launch-template)
+    - [11. Criar Auto Scaling Group](#11-criar-auto-scaling-group)
+    - [12. Alterar Security Group da EC2](#12-alterar-security-group-da-ec2)
+  - [💻 Testes finais](#-testes-finais)
+    - [1. Entrar na instância através do DNS do Load Balancer](#1-entrar-na-instância-através-do-dns-do-load-balancer)
+  - [✅ Conclusão](#-conclusão)
 
+---
 ## 🖥️ Etapas no Console da AWS
 
 ### 1. Criar a VPC
@@ -194,12 +212,12 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
   ```
 
 > [!NOTE]\
-> Este user_data e docker-compose também se encontram nas pastas deste repositório.
+> Este [user_data](./user_data.sh) e [docker-compose](./docker-compose.yml) também se encontram nas pastas deste repositório.
 
 - Espere a instância ficar com este status para prosseguir:  
   ![alt text](prints/image-19-9.png)
 
-### 6. Acessar instância pelo terminal
+### 5. Acessar instância pelo terminal
 
 > [!NOTE]\
 > Estou usando um terminal WSL Ubuntu, visto que meu sistema operacional é windows, mas pode ser qualquer terminal Ubuntu.
@@ -234,7 +252,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
     Docker Compose version v2.23.3
     ```
 
-### 7. Configurar Security Groups
+### 6. Configurar Security Groups
 
 - No menu lateral, procure por "Security Groups" e clique em "Create security group":  
   ![alt text](prints/image-19-11.png)
@@ -272,7 +290,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 > [!NOTE]\
 > Em "Source" selecione o security group da EC2.
 
-### 8. Configurar Wordpress
+### 7. Configurar Wordpress
 
 - Acesse no navegador: http://IpPublicoDaInstancia:80
 
@@ -287,7 +305,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 - Dentro do Wordpress, adicione algumas imagens para testar a persistência dos dados:  
   ![alt text](prints/image-19-19.png)
 
-### 9. Criar Target Group
+### 8. Criar Target Group
 
 - Na barra de pesquisa, procure por EC2
 
@@ -311,7 +329,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 - No final da página, clique em "Create target group" e você verá esta imagem:  
   ![alt text](prints/image-23.png)
 
-### 10. Criar um Load Balancer
+### 9. Criar um Load Balancer
 
 - Ainda na mesma página do target group, no menu lateral clique em "Load Balancers" e então em "Create load balancer":  
   ![alt text](prints/image-24.png)
@@ -342,7 +360,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 
 - E por fim, ao final da página clique em "Create load balancer"
 
-### 11. Criar Launch Template
+### 10. Criar Launch Template
 
 - No menu lateral, clique em "Launch Templates" e depois em "Create launch template":  
   ![alt text](prints/image-32.png)
@@ -370,7 +388,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 
 - Clique em "Create launch template"
 
-### 12. Criar Auto Scaling Group
+### 11. Criar Auto Scaling Group
 
 - Em EC2, no menu lateral procure por "Auto Scaling Groups" e em "Create Auto Scaling group":  
   ![alt text](prints/image-40.png)
@@ -405,7 +423,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 - Volte à página das Instâncias e verá a nova instância criada pelo auto scaling:  
   ![alt text](prints/image-48.png)
 
-### 13. Alterar Security Group da EC2
+### 12. Alterar Security Group da EC2
 
 - Edite a inbound rule da EC2, adicionando esta regra:
   ![alt text](prints/image-49.png)
