@@ -2,44 +2,6 @@
 
 Este projeto tem como objetivo provisionar uma infraestrutura escalável e resiliente para o WordPress, utilizando serviços gerenciados da AWS em conjunto com containers Docker e orquestração via Docker Compose.
 
-**[INSIRA PRINT AQUI]**
-
----
-
-## 📐 Arquitetura da Solução
-
-- **EC2** (instâncias em Auto Scaling) com Docker e Docker Compose
-
-**[INSIRA PRINT AQUI]**
-- **RDS (MySQL)** para o banco de dados gerenciado
-
-**[INSIRA PRINT AQUI]**
-- **EFS** para compartilhamento de mídia entre instâncias
-
-**[INSIRA PRINT AQUI]**
-- **Elastic Load Balancer (ALB)** para balanceamento de carga
-
-**[INSIRA PRINT AQUI]**
-- **Auto Scaling Group** para escalar horizontalmente as instâncias EC2
-
-**[INSIRA PRINT AQUI]**
-- **Docker Compose** para orquestrar containers de WordPress e PHPMyAdmin
-
-**[INSIRA PRINT AQUI]**
-
----
-
-## 🧰 Pré-requisitos
-
-- Conta na AWS com permissões suficientes
-- Chave `.pem` da instância EC2
-
-**[INSIRA PRINT AQUI]**
-- Docker e Docker Compose instalados no terminal (WSL/Linux)
-
-**[INSIRA PRINT AQUI]**
-- AWS CLI configurado com `aws configure`
-
 ---
 
 ## 🖥️ Etapas no Console da AWS
@@ -54,18 +16,18 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
  - Na criação da VPC, selecione "VPC and more" e digite um nome para esta VPC:  
     ![alt text](prints/image-2.png)  
 
-    > [!NOTE]\
-    > "VPC and more" cria automáticamente 2 sudnets públicas e 2 privadas, 1 route table para as subnets públicas e 1 route table para cada subnet privada (3 route tables ao total) e por fim, cria as 2 conexões "Network connections": 1 Internet Gateway para a route table pública e 1 para o S3 Gateway.
+> [!NOTE]\
+> "VPC and more" cria automáticamente 2 sudnets públicas e 2 privadas, 1 route table para as subnets públicas e 1 route table para cada subnet privada (3 route tables ao total) e por fim, cria as 2 conexões "Network connections": 1 Internet Gateway para a route table pública e 1 para o S3 Gateway.
 
  - Na parte "NAT gateways" e "VPC endpoints" selecionar como na imagem:  
     ![alt text](prints/image-3.png)
 
-    > [!NOTE]\
-    > As outras partes já virão selecionadas por padrão, mas certifique-se de que estejam como na imagem.
+> [!NOTE]\
+> As outras partes já virão selecionadas por padrão, mas certifique-se de que estejam como na imagem.
 
  - Ao final da página clique em "Create VPC".
 
- - O Resource Map será parecido com este:
+ - O Resource Map será parecido com este:  
     ![alt text](prints/image-4.png)
 
 ### 2. Criar um EFS
@@ -74,7 +36,7 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 
 - Clique em "Create file system"
 
-- Adicione um nome, escolha a VPC que criamos préviamente e clique em "Create file system":
+- Adicione um nome, escolha a VPC que criamos préviamente e clique em "Create file system":  
     ![alt text](prints/image-5.png)  
 
 - Criar pontos de montagem para as sub-redes públicas
@@ -84,43 +46,43 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 
 - Na barra de pesquisa, procure por "RDS"
 
-- No menu lateral, clique em "Databases" e então em "Create database":
+- No menu lateral, clique em "Databases" e então em "Create database":  
     ![alt text](prints/image-6.png)  
 
-- Em "Engine options" selecione "MySQL":
+- Em "Engine options" selecione "MySQL":  
     ![alt text](prints/image-7.png)  
 
-- Na parte "Templates" selecione a opção "Free tier":
+- Na parte "Templates" selecione a opção "Free tier":  
     ![alt text](prints/image-8.png)  
 
-    > [!NOTE]\
-    > A opção "Availability and durability" terá apenas uma opção possível disponível para free tier, sendo a opção "Single-AZ DB instance deployment"
+> [!NOTE]\
+> A opção "Availability and durability" terá apenas uma opção possível disponível para free tier, sendo a opção "Single-AZ DB instance deployment"
 
-- Em "Settings" renomeie o id do banco de dados e digite a senha desejada para este banco:
+- Em "Settings" renomeie o id do banco de dados e digite a senha desejada para este banco:  
     ![alt text](prints/image-9.png)  
 
-    > [!NOTE]\
-    > Por padrão, o username do banco de dados já vem como "admin", mas pode ser alterado caso desejado.
+> [!NOTE]\
+> Por padrão, o username do banco de dados já vem como "admin", mas pode ser alterado caso desejado.
 
-- Na parte seguinte "Instance configuration", deixe a última opção como "db.t3.micro":
+- Na parte seguinte "Instance configuration", deixe a última opção como "db.t3.micro":  
     ![alt text](prints/image-10.png)  
 
-- Em "Storage" e "Connectivity" todas as opções são préviamente selecionadas por padrão, mas certifique-se de que estejam marcadas desta forma:
+- Em "Storage" e "Connectivity" todas as opções são préviamente selecionadas por padrão, mas certifique-se de que estejam marcadas desta forma:  
     ![alt text](prints/image-11.png)
     ![alt text](prints/image-12.png)  
 
-- Ainda em "Connectivity" selecione a opção "Create new" para criar um novo security group para este RDS e digite o nome desejado:
+- Ainda em "Connectivity" selecione a opção "Create new" para criar um novo security group para este RDS e digite o nome desejado:  
      ![alt text](prints/image-13.png)  
 
-- As opções seguintes deixe como vêm por padrão:
+- As opções seguintes deixe como vêm por padrão:  
     ![alt text](prints/image-14.png)  
     ![alt text](prints/image-15.png)  
 
-- Em "Additional configuration" digite o nome para o banco de dados:
+- Em "Additional configuration" digite o nome para o banco de dados:  
     ![alt text](prints/image-16.png)  
 
-    > [!WARNING]\
-    > Caso não adicione este nome, o banco não será criado automáticamente.
+> [!WARNING]\
+> Caso não adicione este nome, o banco não será criado automáticamente.
 
 - As opções seguintes deixe como vêm por padrão:  
     ![alt text](prints/image-17.png)  
@@ -142,14 +104,14 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 - Em "Instance type" selecione o tipo "t2.micro" e em "Key pair" selecione "Create new key pair":  
   ![alt text](prints/image-19-3.png)
 
-  > [!NOTE]\
-  > Este tipo de instância faz parte do free tier da AWS.
+> [!NOTE]\
+> Este tipo de instância faz parte do free tier da AWS.
 
 - Em "Create key pair" nomeie a chave, mantenha as outras configurações e clique em "Create key pair":  
   ![alt text](prints/image-19-4.png)
 
-  > [!NOTE]\
-  >Após criar a chave, o download dela se iniciará na sua máquina na pasta downloads.
+> [!NOTE]\
+>Após criar a chave, o download dela se iniciará na sua máquina na pasta downloads.
 
 - Em "Network settings" tenha certeza de que a VPC correta está selecionada e que a subnet seleciona seja uma pública. Mantenha o "Auto-assign public IP" como "Enable", selecione "Create security group e nomeie este novo grupo:  
   ![alt text](prints/image-19-5.png)
@@ -157,8 +119,8 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
 - Em seguida apenas mude o "Source type" em "Inbound Security Group Rules" para "My IP":  
   ![alt text](prints/image-19-6.png)
 
-  > [!NOTE]\
-  > Ao lado em "Name" seu IP aparecerá. Borrei o meu por questões de segurança.
+> [!NOTE]\
+> Ao lado em "Name" seu IP aparecerá. Borrei o meu por questões de segurança.
 
 - "Configure storage" mantenha como já vem por padrão
 
@@ -215,23 +177,24 @@ Este projeto tem como objetivo provisionar uma infraestrutura escalável e resil
   ```bash
   version: '3.8'
 
-services:
+  services:
 
-  wordpress:
-    image: wordpress
-    restart: always
-    ports:
-      - 80:80
-    environment:
-      WORDPRESS_DB_HOST: SEU_ENDPOINT_RDS
-      WORDPRESS_DB_USER: USUARIO
-      WORDPRESS_DB_PASSWORD: SENHA
-      WORDPRESS_DB_NAME: NOMEBANCO
-    volumes:
-      - /mnt/efs:/var/www/html/wp-content
+    wordpress:
+      image: wordpress
+      restart: always
+      ports:
+        - 80:80
+      environment:
+        WORDPRESS_DB_HOST: SEU_ENDPOINT_RDS
+        WORDPRESS_DB_USER: USUARIO
+        WORDPRESS_DB_PASSWORD: SENHA
+        WORDPRESS_DB_NAME: NOMEBANCO
+      volumes:
+        - /mnt/efs:/var/www/html/wp-content
+  ```
 
-  > [!NOTE]\
-  > Este user_data e docker-compose também se encontram nas pastas deste repositório.
+> [!NOTE]\
+> Este user_data e docker-compose também se encontram nas pastas deste repositório.
 
 - Espere a instância ficar com este status para prosseguir:  
   ![alt text](prints/image-19-9.png)
@@ -256,9 +219,9 @@ services:
   ssh -i NomeDaChave.pem ubuntu@IpPublicoDaIntancia
   ```
 
-  > [!NOTE]\
-  > O IP público da instância, você encontra aqui:  
-  > ![alt text](prints/image-19-10.png)
+> [!NOTE]\
+> O IP público da instância, você encontra aqui:  
+> ![alt text](prints/image-19-10.png)
 
 - Dentro da instância, faça estes testes para saber se tdo foi instalado corretamente:
   ```bash
@@ -279,8 +242,8 @@ services:
 - Nomeie este grupo, adicione uma descrição e selecione a VPC:  
   ![alt text](prints/image-19-12.png)
 
-  > [!NOTE]\
-  > Por enquanto vamos manter as regras como estão.
+> [!NOTE]\
+> Por enquanto vamos manter as regras como estão.
 
 - Ao final da página clique em "Create security group".
 
@@ -290,24 +253,24 @@ services:
 - Adicione estas regras e salve:  
   ![alt text](prints/image-19-14.png)
 
-  > [!NOTE]\
-  > Na regra NFS, em "Source" selecione o security group do EFS;
-  > Na regra MYSQL/Aurora, em "Source" selecione o security group do RDS;
-  > Na regra HTTP, em "Source" selecione o seu IP.
+> [!NOTE]\
+> Na regra NFS, em "Source" selecione o security group do EFS;
+> Na regra MYSQL/Aurora, em "Source" selecione o security group do RDS;
+> Na regra HTTP, em "Source" selecione o seu IP.
 
 - Faça o mesmo no grupo do RDS e edite as inbound rules, adicionando estas regras e salve:  
   ![alt text](prints/image-19-15.png)
 
-  > [!NOTE]\
-  > Em "Source" selecione o security group da EC2.
+> [!NOTE]\
+> Em "Source" selecione o security group da EC2.
 
 - Delete todas as outbound rules do grupo de segurança do RDS
 
 - Edite também as inbound rules do EFS:  
   ![alt text](prints/image-19-16.png)
 
-  > [!NOTE]\
-  > Em "Source" selecione o security group da EC2.
+> [!NOTE]\
+> Em "Source" selecione o security group da EC2.
 
 ### 8. Configurar Wordpress
 
@@ -368,8 +331,8 @@ services:
 - Na criação deste Security group, adicione o nome, descrição, VPC e as seguintes inbound e outbound rules:  
   ![alt text](prints/image-29.png)
 
-  > [!NOTE]\
-  > Em "Source" do outbound rule selecione o security group da EC2. 
+> [!NOTE]\
+> Em "Source" do outbound rule selecione o security group da EC2. 
 
 - Volte à guia anterior e selecione o grupo do Load Balancer que acabamos de criar:  
   ![alt text](prints/image-30.png)
@@ -447,8 +410,8 @@ services:
 - Edite a inbound rule da EC2, adicionando esta regra:
   ![alt text](prints/image-49.png)
 
-  > [!NOTE]\
-  > Em "Source" selecione o security group da EC2.
+> [!NOTE]\
+> Em "Source" selecione o security group da EC2.
 
 ## 💻 Testes finais
 
